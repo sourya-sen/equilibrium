@@ -422,16 +422,16 @@ void ofApp::update(){
     cout << "Total number of people: " << people.size() << " Average Delta: " << averageDelta << endl;
         
         if(averageDelta>0.00001f){
-            a.mass += 2.0;
-            b.mass += 2.0;
+            a.mass += 0.5f;
+            b.mass += 0.5f;
         } else {
             a.mass -= 10.0;
             b.mass -= 10.0;
         }
-        
-        a.mass = ofClamp(a.mass, 0.0, clamp_);
-        b.mass = ofClamp(b.mass, 0.0, clamp_);
     }
+    
+    a.mass = ofClamp(a.mass, 0.0, clamp_);
+    b.mass = ofClamp(b.mass, 0.0, clamp_);
     
     if((people.size() == 0) && (a.mass>0)){
         a.mass -= 25.0;
