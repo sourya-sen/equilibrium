@@ -47,6 +47,6 @@ void cParticles::update(){
 void cParticles::draw() {
     ofSetColor(255, 255 - life);
     float size = mass * sizeMultiplier;
-    size = ofClamp(size, 1.0, 2.0);
+    //size = ofClamp(size, 1.0, 2.0);
     ofDrawCircle(position, size);
 }

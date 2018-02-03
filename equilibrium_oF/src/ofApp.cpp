@@ -37,6 +37,8 @@ void ofApp::setup(){
         buttons[i].lastState = -1;
     }
     
+    sizeModifier = 2.0f;
+    
     
     //------------------GUI
     /*
@@ -187,19 +189,16 @@ void ofApp::update(){
                     }
                     break;
                 case 4:
-                    for(auto &p:particles){
-                        p.sizeMultiplier = 2.0;
-                    }
+                    sizeModifier = 2.0f;
+//                    cout << i << endl;
                     break;
                 case 5:
-                    for(auto &p:particles){
-                        if(p.sizeMultiplier<6.0) p.sizeMultiplier += 0.5f;
-                    }
+                    if(sizeModifier<20.0) sizeModifier += 0.5f;
+//                     cout << i << endl;
                     break;
                 case 6:
-                    for(auto &p:particles){
-                        if(p.sizeMultiplier>2.0) p.sizeMultiplier -= 0.5f;
-                    }
+                    if(sizeModifier>2.0) sizeModifier -= 0.5f;
+//                     cout << i << endl;
                     break;
                 case 7:
                     randomTrigger();
@@ -208,6 +207,8 @@ void ofApp::update(){
             buttons[i].lastState = buttons[i].state;
         }
     }
+    
+//    cout << "Size: " << sizeModifier << endl;
     
     /*
     if(b0.state != b0.lastState){
@@ -431,7 +432,7 @@ void ofApp::update(){
     
     double averageDelta = totalDelta/float(people.size());
     
-    cout << "Total number of people: " << people.size() << " Average Delta: " << averageDelta << endl;
+//    cout << "Total number of people: " << people.size() << " Average Delta: " << averageDelta << endl;
         
         if(averageDelta>0.00001f){
             a.mass += 0.5f;
@@ -484,6 +485,7 @@ void ofApp::draw(){
     
     //-----------------Particle Draw
     for(auto p = particles.begin(); p!= particles.end(); ++p){
+        p->sizeMultiplier = sizeModifier;
         p->draw();
     }
     

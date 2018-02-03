@@ -126,5 +126,7 @@ class ofApp : public ofBaseApp{
     vector<Button> buttons;
     
     void randomTrigger();
+    
+    float sizeModifier;
 
 };
