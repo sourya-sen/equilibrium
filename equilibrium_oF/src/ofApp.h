@@ -121,7 +121,9 @@ class ofApp : public ofBaseApp{
     };
     
     Pot pot0, pot1, pot2, pot3;
-    Button b0, b1, b2, b3, b4, b5, b6, b7;
+    //Button b0, b1, b2, b3, b4, b5, b6, b7;
+    
+    vector<Button> buttons;
     
     void randomTrigger();
 

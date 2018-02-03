@@ -30,6 +30,13 @@ void ofApp::setup(){
         distractors.push_back(d);
     }
     
+    //Buttons!
+    buttons.resize(8);
+    for(int i = 0; i<buttons.size(); i++){
+        buttons[i].state = 0;
+        buttons[i].lastState = -1;
+    }
+    
     
     //------------------GUI
     /*
@@ -112,29 +119,29 @@ void ofApp::update(){
                 //cout<<"pot3: " << pot3.value << endl;
             }
             
-            else if(value == 4001) b0.state = 1;
-            else if(value == 4002) b0.state = 0;
+            else if(value == 4001) buttons[0].state = 1;
+            else if(value == 4002) buttons[0].state = 0;
             
-            else if(value == 4003) b1.state = 1;
-            else if(value == 4004) b1.state = 0;
+            else if(value == 4003) buttons[1].state = 1;
+            else if(value == 4004) buttons[1].state = 0;
             
-            else if(value == 4005) b2.state = 1;
-            else if(value == 4006) b2.state = 0;
+            else if(value == 4005) buttons[2].state = 1;
+            else if(value == 4006) buttons[2].state = 0;
             
-            else if(value == 4007) b3.state = 1;
-            else if(value == 4008) b3.state = 0;
+            else if(value == 4007) buttons[3].state = 1;
+            else if(value == 4008) buttons[3].state = 0;
             
-            else if(value == 4009) b4.state = 1;
-            else if(value == 4010) b4.state = 0;
+            else if(value == 4009) buttons[4].state = 1;
+            else if(value == 4010) buttons[4].state = 0;
             
-            else if(value == 4011) b5.state = 1;
-            else if(value == 4012) b5.state = 0;
+            else if(value == 4011) buttons[5].state = 1;
+            else if(value == 4012) buttons[5].state = 0;
             
-            else if(value == 4013) b6.state = 1;
-            else if(value == 4014) b6.state = 0;
+            else if(value == 4013) buttons[6].state = 1;
+            else if(value == 4014) buttons[6].state = 0;
             
-            else if(value == 4015) b7.state = 1;
-            else if(value == 4016) b7.state = 0;
+            else if(value == 4015) buttons[7].state = 1;
+            else if(value == 4016) buttons[7].state = 0;
             
             else {
                 //do nothing?
@@ -158,6 +165,39 @@ void ofApp::update(){
     
     //Buttons...//TODO: Put these nicely in a vector, this is so hacky o.O
     
+    for(int i=0; i<buttons.size(); i++){
+        if(buttons[i].state != buttons[i].lastState){
+            switch(i){
+                case 0:
+                    randomTrigger();
+                    break;
+                case 1:
+                    randomTrigger();
+                    break;
+                case 2:
+                    randomTrigger();
+                    break;
+                case 3:
+                    randomTrigger();
+                    break;
+                case 4:
+                    randomTrigger();
+                    break;
+                case 5:
+                    randomTrigger();
+                    break;
+                case 6:
+                    randomTrigger();
+                    break;
+                case 7:
+                    randomTrigger();
+                    break;
+            }
+            buttons[i].lastState = buttons[i].state;
+        }
+    }
+    
+    /*
     if(b0.state != b0.lastState){
         randomTrigger();
         b0.lastState = b0.state;
@@ -212,6 +252,7 @@ void ofApp::update(){
         cout << "B7 Changed!" << endl;
         
     }
+     */
     
     //Also trigger randomly once in a while...
     int rT = ofRandom(10000);
@@ -455,14 +496,14 @@ void ofApp::draw(){
         ofDrawBitmapStringHighlight(ofToString(pot2.value), 75, 15);
         ofDrawBitmapStringHighlight(ofToString(pot3.value), 105, 15);
         
-        ofDrawBitmapStringHighlight(ofToString(b0.state), 15, 30);
-        ofDrawBitmapStringHighlight(ofToString(b1.state), 45, 30);
-        ofDrawBitmapStringHighlight(ofToString(b2.state), 75, 30);
-        ofDrawBitmapStringHighlight(ofToString(b3.state), 105, 30);
-        ofDrawBitmapStringHighlight(ofToString(b4.state), 15, 45);
-        ofDrawBitmapStringHighlight(ofToString(b5.state), 45, 45);
-        ofDrawBitmapStringHighlight(ofToString(b6.state), 75, 45);
-        ofDrawBitmapStringHighlight(ofToString(b7.state), 105, 45);
+        ofDrawBitmapStringHighlight(ofToString(buttons[0].state), 15, 30);
+        ofDrawBitmapStringHighlight(ofToString(buttons[1].state), 45, 30);
+        ofDrawBitmapStringHighlight(ofToString(buttons[2].state), 75, 30);
+        ofDrawBitmapStringHighlight(ofToString(buttons[3].state), 105, 30);
+        ofDrawBitmapStringHighlight(ofToString(buttons[4].state), 15, 45);
+        ofDrawBitmapStringHighlight(ofToString(buttons[5].state), 45, 45);
+        ofDrawBitmapStringHighlight(ofToString(buttons[6].state), 75, 45);
+        ofDrawBitmapStringHighlight(ofToString(buttons[7].state), 105, 45);
     }
 }
 
