@@ -83,18 +83,13 @@ void ofApp::update(){
     
     auto iter = serialMessages.begin();
     
-    
     // Cycle through each of our messages and delete those that have expired.
-    while (iter != serialMessages.end())
-    {
+    while (iter != serialMessages.end()){
         iter->fade -= 1;
         
-        if (iter->fade < 0)
-        {
+        if (iter->fade < 0){
             iter = serialMessages.erase(iter);
-        }
-        else
-        {
+        } else {
             int value = ofToInt(iter->message);
             
             if(value>0 && value<1001){
@@ -147,11 +142,9 @@ void ofApp::update(){
             }
             
             
-            if (!iter->exception.empty())
-            {
+            if (!iter->exception.empty()){
                 std::cout << "error?!" << std::endl;
             }
-            
             ++iter;
         }
     }
@@ -220,9 +213,9 @@ void ofApp::update(){
         
     }
     
-    //Also trigger randomly once in a while
-    
-    if(ofGetFrameNum()%60000 == 0){
+    //Also trigger randomly once in a while...
+    int rT = ofRandom(10000);
+    if(rT<100){
         randomTrigger();
     }
     
@@ -237,7 +230,6 @@ void ofApp::update(){
         
         //check for the messages! :)
         if(message == "/TSPS/personEntered/"){
-            
             //cout<<"enter message"<<endl;
             
             //setup a new person
@@ -247,39 +239,29 @@ void ofApp::update(){
             one.prevDepth = one.depth;
             one.depthDelta = 0.0f;
             
-            //for(int i = 0; i<10; i++){
-            //  cout<<i<<": " << m.getArgType(i)<<endl;;
-            //}
-            
             //cout<<m.getArgAsFloat(7)<<endl;
             
             people.push_back(one);
         }
         
         if(message == "/TSPS/personUpdated/"){
-            
             //update the person!
             
             for(int i = 0; i<people.size(); i++){
                 if(m.getArgAsInt32(0) == people[i].pid){
                     people[i].depth = m.getArgAsFloat(7);
                     people[i].depthDelta = fabs(people[i].depth - people[i].prevDepth);
-                    if (people[i].depthDelta < .00001) people[i].depthDelta = 0.0;
+                    if (people[i].depthDelta < 0.00001f) people[i].depthDelta = 0.0;
                     people[i].prevDepth = people[i].depth;
                 }
             }
-            
-            //cout<<m.getArgAsInt32(0)<<endl;
-            //cout<<m.getArgAsFloat(7)<<endl;
         }
         
         if(message == "/TSPS/scene"){
-            
-            //cout<<"scene message"<<endl;
+            //nothing to do with the scene message.
         }
         
         if(message == "/TSPS/personWillLeave/"){
-            
             //remove the person from the vector!
             
             int index = -1;
@@ -291,8 +273,6 @@ void ofApp::update(){
             }
             
             if (index > -1) people.erase(people.begin() + index);
-            
-            //cout<<"will leave message"<<endl;
         }
         
         else{
@@ -337,7 +317,6 @@ void ofApp::update(){
                     ofVec2f force = d.attract(*p);
                     p->applyForce(ofVec2f(0, force.y));
                 }
-                
             }
         }
         
@@ -416,12 +395,6 @@ void ofApp::update(){
     if((people.size() == 0) && (a.mass>0)){
         a.mass -= 25.0;
         b.mass -= 25.0;
-    }
-    
-    //Let's do a randomTrigger once in a while...
-    int rT = ofRandom(10000);
-    if(rT<100){
-        randomTrigger();
     }
     
 }
