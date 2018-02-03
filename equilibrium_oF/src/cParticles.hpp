@@ -20,6 +20,8 @@ public:
     void update();
     void draw();
     
+    float sizeMultiplier;
+    
 };
 
 

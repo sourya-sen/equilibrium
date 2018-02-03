@@ -187,13 +187,19 @@ void ofApp::update(){
                     }
                     break;
                 case 4:
-                    randomTrigger();
+                    for(auto &p:particles){
+                        p.sizeMultiplier = 2.0;
+                    }
                     break;
                 case 5:
-                    randomTrigger();
+                    for(auto &p:particles){
+                        if(p.sizeMultiplier<6.0) p.sizeMultiplier += 0.5f;
+                    }
                     break;
                 case 6:
-                    randomTrigger();
+                    for(auto &p:particles){
+                        if(p.sizeMultiplier>2.0) p.sizeMultiplier -= 0.5f;
+                    }
                     break;
                 case 7:
                     randomTrigger();

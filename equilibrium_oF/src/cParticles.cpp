@@ -6,6 +6,7 @@ cParticles::cParticles(){
     isAlive = true;
     life = ofRandom(127);
     id = int(ofRandom(3)) % 2;
+    sizeMultiplier = 2.0;
 }
 
 //.................................................
@@ -45,7 +46,7 @@ void cParticles::update(){
 //.................................................
 void cParticles::draw() {
     ofSetColor(255, 255 - life);
-    float size = mass * 2.0;
+    float size = mass * sizeMultiplier;
     size = ofClamp(size, 1.0, 2.0);
     ofDrawCircle(position, size);
 }
