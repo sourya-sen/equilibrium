@@ -33,11 +33,11 @@ void ofApp::setup(){
     
     //------------------GUI
     /*
-    gui.setup();
-    gui.add(windS_.setup("wind", 0.001, .00001, .001));
-    gui.add(gravS_.setup("gravity", .0001, 0.0001, .001));
-    gui.add(oMass_.setup("centre nass", 100, 75, 200));
-    gui.add(clamp_.setup("clamp", 300, 150, 500));
+     gui.setup();
+     gui.add(windS_.setup("wind", 0.001, .00001, .001));
+     gui.add(gravS_.setup("gravity", .0001, 0.0001, .001));
+     gui.add(oMass_.setup("centre nass", 100, 75, 200));
+     gui.add(clamp_.setup("clamp", 300, 150, 500));
      */
     
     //---------------------Serial
@@ -83,6 +83,7 @@ void ofApp::update(){
     //-------------------Serial.
     
     auto iter = serialMessages.begin();
+    
     
     // Cycle through each of our messages and delete those that have expired.
     while (iter != serialMessages.end())
@@ -168,41 +169,56 @@ void ofApp::update(){
     if(b0.state != b0.lastState){
         randomTrigger();
         b0.lastState = b0.state;
+        cout << "B0 Changed!" << endl;
     }
     
     if(b1.state != b1.lastState){
         randomTrigger();
         b1.lastState = b1.state;
+        cout << "B1 Changed!" << endl;
+        
     }
     
     if(b2.state != b2.lastState){
         randomTrigger();
         b2.lastState = b2.state;
+        cout << "B2 Changed!" << endl;
+        
     }
     
     if(b3.state != b3.lastState){
         randomTrigger();
         b3.lastState = b3.state;
+        cout << "B3 Changed!" << endl;
+        
     }
     
     if(b4.state != b4.lastState){
         randomTrigger();
         b4.lastState = b4.state;
+        cout << "B4 Changed!" << endl;
+        
     }
     
     if(b5.state != b5.lastState){
         randomTrigger();
         b5.lastState = b5.state;
+        cout << "B5 Changed!" << endl;
+        
     }
     
     if(b6.state != b6.lastState){
         randomTrigger();
         b6.lastState = b6.state;
+        cout << "B6 Changed!" << endl;
+        
     }
     
     if(b7.state != b7.lastState){
         randomTrigger();
         b7.lastState = b7.state;
+        cout << "B7 Changed!" << endl;
+        
     }
     
     //Also trigger randomly once in a while
@@ -308,7 +324,7 @@ void ofApp::update(){
                 ofVec2f bForce = b.attract(*p);
                 p->applyForce(ofVec2f(bForce.x/4.0, bForce.y));
             }
-
+            
             
         } else {
             
@@ -353,7 +369,7 @@ void ofApp::update(){
             particles.push_back(tP);
         }
     }
-
+    
     
     //-----------Kinect - > Attractors
     if(people.size() == 1){
@@ -371,16 +387,16 @@ void ofApp::update(){
         
         //cout<<people[0].depthDelta<<endl;
         
-//        a.mass = (100.0 * people[0].depthDelta * 5000);
-//        b.mass = (100.0 * people[0].depthDelta * 5000);
+        //        a.mass = (100.0 * people[0].depthDelta * 5000);
+        //        b.mass = (100.0 * people[0].depthDelta * 5000);
     }
     
     /*
-    
-    if(people.size() > 1){
-        a.mass = (100.0 * people[0].depthDelta * 5000);
-        b.mass = (100.0 * people[1].depthDelta * 5000);
-    }
+     
+     if(people.size() > 1){
+     a.mass = (100.0 * people[0].depthDelta * 5000);
+     b.mass = (100.0 * people[1].depthDelta * 5000);
+     }
      
      */
     
@@ -420,7 +436,7 @@ void ofApp::randomTrigger(){
 void ofApp::draw(){
     
     //gui.draw();
-
+    
     //-----------------Particle Draw
     for(auto p = particles.begin(); p!= particles.end(); ++p){
         p->draw();
@@ -442,6 +458,19 @@ void ofApp::draw(){
         }
         
         //gui.draw();
+        ofDrawBitmapStringHighlight(ofToString(pot0.value), 15, 15);
+        ofDrawBitmapStringHighlight(ofToString(pot1.value), 45, 15);
+        ofDrawBitmapStringHighlight(ofToString(pot2.value), 75, 15);
+        ofDrawBitmapStringHighlight(ofToString(pot3.value), 105, 15);
+        
+        ofDrawBitmapStringHighlight(ofToString(b0.state), 15, 30);
+        ofDrawBitmapStringHighlight(ofToString(b1.state), 45, 30);
+        ofDrawBitmapStringHighlight(ofToString(b2.state), 75, 30);
+        ofDrawBitmapStringHighlight(ofToString(b3.state), 105, 30);
+        ofDrawBitmapStringHighlight(ofToString(b4.state), 15, 45);
+        ofDrawBitmapStringHighlight(ofToString(b5.state), 45, 45);
+        ofDrawBitmapStringHighlight(ofToString(b6.state), 75, 45);
+        ofDrawBitmapStringHighlight(ofToString(b7.state), 105, 45);
     }
 }
 

@@ -57,6 +57,7 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
     
     bool debug;
+
     
     //-----------Particle Code
     struct Gravity{
