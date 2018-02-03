@@ -51,3 +51,8 @@ void cAttractor::resetPosX(){
 void cAttractor::resetPosY(){
     position.y = ofRandomHeight();
 }
+
+//..................................................
+void cAttractor::resetMass(int _min, int _max){
+    mass = ofRandom(_min, _max);
+}

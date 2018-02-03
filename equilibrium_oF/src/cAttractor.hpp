@@ -19,4 +19,6 @@ public:
     void resetPosY();
     
     void draw();
+    
+    void resetMass(int _min, int _max);
 };

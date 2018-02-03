@@ -172,13 +172,19 @@ void ofApp::update(){
                     randomTrigger();
                     break;
                 case 1:
-                    randomTrigger();
+                    for(auto &d : distractors){
+                        d.resetMass(50, 200);
+                    }
                     break;
                 case 2:
-                    randomTrigger();
+                    for(auto &o : originals){
+                        o.resetPosX();
+                    }
                     break;
                 case 3:
-                    randomTrigger();
+                    for(auto &d : distractors){
+                        d.resetPos();
+                    }
                     break;
                 case 4:
                     randomTrigger();
