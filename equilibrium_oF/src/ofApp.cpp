@@ -372,6 +372,9 @@ void ofApp::update(){
     
     
     //-----------Kinect - > Attractors
+    //...............................................................
+    //Old code to work with only one person.
+    /*
     if(people.size() == 1){
         
         if(people[0].depthDelta > 0.0001f){
@@ -384,25 +387,42 @@ void ofApp::update(){
         
         a.mass = ofClamp(a.mass, 0.0, clamp_);
         b.mass = ofClamp(b.mass, 0.0, clamp_);
-        
-        //cout<<people[0].depthDelta<<endl;
-        
-        //        a.mass = (100.0 * people[0].depthDelta * 5000);
-        //        b.mass = (100.0 * people[0].depthDelta * 5000);
+    }
+    */
+    //...............................................................
+    
+    double totalDelta = 0.0f;
+    
+    if(people.size()>0){
+    for(int i=0; i<people.size(); i++){
+        totalDelta += people[i].depthDelta;
     }
     
-    /*
-     
-     if(people.size() > 1){
-     a.mass = (100.0 * people[0].depthDelta * 5000);
-     b.mass = (100.0 * people[1].depthDelta * 5000);
-     }
-     
-     */
+    double averageDelta = totalDelta/float(people.size());
     
-    if(people.size() == 0){
-        a.mass = 0;
-        b.mass = 0;
+    cout << "Total number of people: " << people.size() << " Average Delta: " << averageDelta << endl;
+        
+        if(averageDelta>0.00001f){
+            a.mass += 2.0;
+            b.mass += 2.0;
+        } else {
+            a.mass -= 10.0;
+            b.mass -= 10.0;
+        }
+        
+        a.mass = ofClamp(a.mass, 0.0, clamp_);
+        b.mass = ofClamp(b.mass, 0.0, clamp_);
+    }
+    
+    if((people.size() == 0) && (a.mass>0)){
+        a.mass -= 25.0;
+        b.mass -= 25.0;
+    }
+    
+    //Let's do a randomTrigger once in a while...
+    int rT = ofRandom(10000);
+    if(rT<100){
+        randomTrigger();
     }
     
 }
