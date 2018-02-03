@@ -58,7 +58,6 @@ void ofApp::setup(){
         if(success)
         {
             device.registerAllEvents(this);
-            
             ofLogNotice("ofApp::setup") << "Successfully setup " << devicesInfo[0];
         }
         else
