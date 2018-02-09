@@ -4,11 +4,11 @@
 void ofApp::setup(){
     
     sampleRate = 44100;
-    bufferSize = 512;
+    bufferSize = 256;
     
     maxiSettings::setup(sampleRate, 2, bufferSize);
     
-    clock.setTempo(30);
+    clock.setTempo(12);
     clock.setTicksPerBeat(1);
     
     attackOne = 10000;
@@ -21,6 +21,10 @@ void ofApp::setup(){
     
     volumeOne = 1.0;
     volumeTwo = 0.0;
+    
+    fftOne.setup(FFTSIZE, 512, 256);
+    fftTwo.setup(FFTSIZE, 512, 256);
+    ifft.setup(FFTSIZE, 512, 256);
     
     envOne.setAttack(attackOne);
     envOne.setDecay(1);
@@ -49,7 +53,9 @@ void ofApp::draw(){
 //--------------------------------------------------------------
 void ofApp::audioOut(float *output, int bufferSize, int nChannels){
     
-     ofScopedLock waveformLock(waveformMutex);
+    ofScopedLock waveformLock(waveformMutex);
+    
+    mixLevel = 0.8;
     
     for(int i = 0; i<bufferSize; i++){
         
@@ -58,15 +64,16 @@ void ofApp::audioOut(float *output, int bufferSize, int nChannels){
         volumeOne = (envOne.adsr(1, envOne.trigger));
         volumeTwo = (envTwo.adsr(1, envTwo.trigger));
         
-        double myOutput;
+        
         if(clock.tick){
             frequencyOne = frequencyTable[ofRandom(frequencyTable.size())]/2.0f;
+            frequencyTwo = frequencyTable[ofRandom(frequencyTable.size())]/2.0f;
 
             envOne.trigger = 1;
             envTwo.trigger = 1;
         } else {
-            envOne.trigger = 0;
-            envTwo.trigger = 0;
+            envOne.trigger = 1;
+            envTwo.trigger = 1;
         }
         
         ratioOne = 30 + 15 * sin(ofDegToRad(ofGetFrameNum()/10.0));
@@ -75,10 +82,33 @@ void ofApp::audioOut(float *output, int bufferSize, int nChannels){
     
         oneOut = oscillatorOne.sinewave(frequencyOne+ (modulatorOne.sinewave(ratioOne*frequencyOne)*indexOne*volumeOne)) * volumeOne;
         
-        double filterOut = filter.lores(oneOut, 80, 2);
+        twoOut = oscillatorTwo.sinewave(frequencyTwo + (modulatorTwo.sinewave(ratioTwo*frequencyTwo)*indexTwo*volumeTwo)) * volumeTwo;
         
-        output[i * nChannels] = filterOut;
-        output[i * nChannels + 1] = filterOut;
+        if(fftOne.process(oneOut)) fftOne.magsToDB();
+        if(fftTwo.process(twoOut)) fftTwo.magsToDB();
+        
+        //....................
+        
+        for(int nBands = 0; nBands<FFTSIZE; nBands++){
+            convoMag[nBands] = float(*(fftOne.magnitudes + nBands) * *(fftTwo.magnitudes + nBands));
+            convoPha[nBands] = float(*(fftOne.phases + nBands) * *(fftTwo.phases + nBands));
+        }
+        
+        cmPointer = convoMag;
+        cpPointer = convoPha;
+        
+        //....................
+        
+        ifftOutput = (double)(ifft.process(cmPointer, cpPointer));
+        
+        double myOutput = oneOut * (1.0 - mixLevel) + ifftOutput * mixLevel;
+        
+        filterOutput = filter.lores(myOutput, 440, 4);
+        
+        output[i * nChannels] = filterOutput;
+        output[i * nChannels + 1] = filterOutput;
+        
+        
     }
 }
 

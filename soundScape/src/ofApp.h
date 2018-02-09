@@ -3,6 +3,8 @@
 #include "ofMain.h"
 #include "ofxMaxim.h"
 
+#define FFTSIZE 1024
+
 class ofApp : public ofBaseApp{
 
 	public:
@@ -64,10 +66,19 @@ class ofApp : public ofBaseApp{
     int attackTwo;
     int releaseTwo;
     
+    //IFFT
+    maxiIFFT ifft;
+    float convoMag[FFTSIZE];
+    float convoPha[FFTSIZE];
+    float *cmPointer, *cpPointer;
+    double ifftOutput;
+    double filterOutput;
+    
     double masterFrequency;
     
     ofMutex waveformMutex;
     
     maxiFilter filter;
+    float mixLevel;
     
 };
