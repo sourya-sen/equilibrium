@@ -86,7 +86,7 @@ void ofApp::setup(){
     
     //---------------------Audio setup
     sampleRate = 44100;
-    bufferSize = 256;
+    bufferSize = 512;
     
     maxiSettings::setup(sampleRate, 2, bufferSize);
     
@@ -562,7 +562,7 @@ void ofApp::audioOut(float *output, int bufferSize, int nChannels){
     
     ofScopedLock waveformLock(waveformMutex);
     
-    mixLevel = 0.8;
+    mixLevel = ofMap(a.mass, 0, clamp_, 0.0, 1.0);
     
     for(int i = 0; i<bufferSize; i++){
         
