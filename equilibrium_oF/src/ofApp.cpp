@@ -98,8 +98,10 @@ void ofApp::setup(){
     ratioOne = 30;
     indexOne = 10;
     
-    attackTwo = 1000;
-    releaseTwo = 10000;
+    attackTwo = 10000;
+    releaseTwo = 100000;
+    ratioTwo = 50;
+    indexTwo = 100;
     
     volumeOne = 1.0;
     volumeTwo = 0.0;
@@ -562,7 +564,11 @@ void ofApp::audioOut(float *output, int bufferSize, int nChannels){
     
     ofScopedLock waveformLock(waveformMutex);
     
-    mixLevel = ofMap(a.mass, 0, clamp_, 0.0, 1.0);
+    float tempMixLevel = ofMap(a.mass, 0, clamp_, 0.0, 1.0);
+    
+    tempMixLevel > mixLevel ? mixLevel += .075 : mixLevel -= .01;
+    
+    mixLevel = ofClamp(mixLevel, 0.0, 1.0);
     
     for(int i = 0; i<bufferSize; i++){
         
@@ -573,7 +579,7 @@ void ofApp::audioOut(float *output, int bufferSize, int nChannels){
         
         
         if(clock.tick){
-            frequencyOne = frequencyTable[ofRandom(frequencyTable.size())]/2.0f;
+            frequencyOne = frequencyTable[ofRandom(frequencyTable.size())]/3.0f;
             frequencyTwo = frequencyTable[ofRandom(frequencyTable.size())]/2.0f;
             
             envOne.trigger = 1;
