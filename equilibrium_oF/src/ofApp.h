@@ -170,6 +170,8 @@ class ofApp : public ofBaseApp{
     int attackTwo;
     int releaseTwo;
     
+    float playFreqOne, playFreqTwo;
+    
     //IFFT
     maxiIFFT ifft;
     float convoMag[FFTSIZE];

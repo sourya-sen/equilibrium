@@ -120,6 +120,9 @@ void ofApp::setup(){
     envTwo.setSustain(10);
     envTwo.setRelease(releaseTwo);
     
+    frequencyOne = frequencyTwo = 440.0;
+    playFreqOne = playFreqTwo = 440.0;
+    
     ofSoundStreamSetup(2, 2, this, sampleRate, bufferSize, 2);
 }
 
@@ -577,25 +580,44 @@ void ofApp::audioOut(float *output, int bufferSize, int nChannels){
         volumeOne = (envOne.adsr(1, envOne.trigger));
         volumeTwo = (envTwo.adsr(1, envTwo.trigger));
         
+        volumeTwo = volumeTwo/2.0;
+        
         
         if(clock.tick){
-            frequencyOne = frequencyTable[ofRandom(frequencyTable.size())]/3.0f;
-            frequencyTwo = frequencyTable[ofRandom(frequencyTable.size())]/2.0f;
+            
+            float frequency = frequencyTable[ofRandom(frequencyTable.size())];
+            frequencyOne = frequency/3.0;
+            frequencyTwo = frequency/2.0;
             
             envOne.trigger = 1;
             envTwo.trigger = 1;
         } else {
             envOne.trigger = 1;
             envTwo.trigger = 1;
+            
+            if(playFreqOne - frequencyOne > DBL_EPSILON){
+                playFreqOne -= .0001;
+            } else if (playFreqOne - frequencyOne < DBL_EPSILON){
+                playFreqOne += .0001;
+            }
+            
+            if(playFreqTwo - frequencyTwo > DBL_EPSILON){
+                playFreqTwo -= .0001;
+            } else if (playFreqTwo - frequencyTwo < DBL_EPSILON){
+                playFreqTwo += .0001;
+            }
         }
+        
+//        cout << frequencyOne << endl;
+//        cout << playFreqOne << endl;
         
         ratioOne = 30 + 15 * sin(ofDegToRad(ofGetFrameNum()/10.0));
         indexOne = 10 + 5 * sin(ofDegToRad(ofGetFrameNum()/100.0));
         
         
-        oneOut = oscillatorOne.sinewave(frequencyOne+ (modulatorOne.sinewave(ratioOne*frequencyOne)*indexOne*volumeOne)) * volumeOne;
+        oneOut = oscillatorOne.sinewave(playFreqOne + (modulatorOne.sinewave(ratioOne*playFreqOne)*indexOne*volumeOne)) * volumeOne;
         
-        twoOut = oscillatorTwo.sinewave(frequencyTwo + (modulatorTwo.sinewave(ratioTwo*frequencyTwo)*indexTwo*volumeTwo)) * volumeTwo;
+        twoOut = oscillatorTwo.sinewave(playFreqTwo + (modulatorTwo.sinewave(ratioTwo*playFreqTwo)*indexTwo*volumeTwo)) * volumeTwo;
         
         if(fftOne.process(oneOut)) fftOne.magsToDB();
         if(fftTwo.process(twoOut)) fftTwo.magsToDB();
