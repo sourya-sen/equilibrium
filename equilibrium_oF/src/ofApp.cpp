@@ -120,8 +120,10 @@ void ofApp::setup(){
     envTwo.setSustain(10);
     envTwo.setRelease(releaseTwo);
     
-    frequencyOne = frequencyTwo = 440.0;
-    playFreqOne = playFreqTwo = 440.0;
+    frequencyOne = frequencyTwo = 110.0;
+    playFreqOne = playFreqTwo = 110.0;
+    
+    ofHideCursor();
     
     ofSoundStreamSetup(2, 2, this, sampleRate, bufferSize, 2);
 }
